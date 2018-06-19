@@ -1,0 +1,109 @@
+int sensorPin = A0;    
+int minPin = A1;    
+int maxPin = A2;    
+int testPin = 4;     
+int ledPin = 5;
+int motorPin = 6;      
+int selenoidPin = 7; 
+int liquidSufPin = 8;
+int sensorValue = 0;  
+int minValue = 0;
+int maxValue = 0;
+int buttonState = 0;
+int liquidSufVal = 0;
+int currentcount = 0;
+
+void setPwmFrequency(int pin, int divisor) {
+  byte mode;
+  if (pin == 5 || pin == 6 || pin == 9 || pin == 10) {
+    switch (divisor) {
+      case 1: mode = 0x01; break;
+      case 8: mode = 0x02; break;
+      case 64: mode = 0x03; break;
+      case 256: mode = 0x04; break;
+      case 1024: mode = 0x05; break;
+      default: return;
+    }
+    if (pin == 5 || pin == 6) {
+      TCCR0B = TCCR0B & 0b11111000 | mode;
+    } else {
+      TCCR1B = TCCR1B & 0b11111000 | mode;
+    }
+  } else if (pin == 3 || pin == 11) {
+    switch (divisor) {
+      case 1: mode = 0x01; break;
+      case 8: mode = 0x02; break;
+      case 32: mode = 0x03; break;
+      case 64: mode = 0x04; break;
+      case 128: mode = 0x05; break;
+      case 256: mode = 0x06; break;
+      case 1024: mode = 0x07; break;
+      default: return;
+    }
+    TCCR2B = TCCR2B & 0b11111000 | mode;
+  }
+}
+void setup() {
+    pinMode(ledPin, OUTPUT);
+    pinMode(selenoidPin, OUTPUT);
+    pinMode(motorPin, OUTPUT);
+    pinMode(sensorPin, INPUT);
+    pinMode(minPin, INPUT);
+    pinMode(maxPin, INPUT);
+    pinMode(testPin, INPUT);
+    pinMode(liquidSufPin, INPUT);
+      setPwmFrequency(5, 64);
+      setPwmFrequency(6, 1);
+      Serial.begin(9600);
+}
+void loop() {
+  if(currentcount == 0){
+    digitalWrite(ledPin, HIGH); 
+    digitalWrite(motorPin, HIGH);
+    digitalWrite(selenoidPin, HIGH);
+      delay(5000);                   
+       digitalWrite(ledPin, LOW);
+       digitalWrite(motorPin, LOW);
+       digitalWrite(selenoidPin, LOW);
+          currentcount=1;
+}
+  buttonState = digitalRead(testPin);
+  if (buttonState == HIGH) {
+    digitalWrite(motorPin, HIGH);
+    digitalWrite(ledPin, HIGH);
+    digitalWrite(selenoidPin, HIGH);
+  } else {
+    digitalWrite(motorPin, LOW);
+    digitalWrite(ledPin, LOW);
+    digitalWrite(selenoidPin, LOW);
+  }
+   liquidSufVal = digitalRead(liquidSufPin);
+   if (liquidSufVal == HIGH) {
+     digitalWrite(ledPin, HIGH);  
+     delay(20000);                
+     digitalWrite(ledPin, LOW);  
+     delay(20000);  
+   } else {
+    digitalWrite(ledPin, LOW);
+  }
+  sensorValue = analogRead(sensorPin);
+  minValue = analogRead(minPin);
+  maxValue = analogRead(maxPin);
+       if (minValue <= maxValue && sensorValue > minValue && sensorValue < maxValue) {
+       int val = analogRead(sensorPin);
+       val = map(val, minValue, maxValue, 75, 255);
+       analogWrite(motorPin, val);
+       analogWrite(ledPin, val);
+       analogWrite(selenoidPin, 255);
+    } 
+    else if(sensorValue >= maxValue && sensorValue >= minValue && minValue <= maxValue){
+       analogWrite(motorPin, 255);
+       analogWrite(ledPin, 255);
+       analogWrite(selenoidPin, 255);
+      }
+  else {
+       analogWrite(selenoidPin, 0);
+       analogWrite(motorPin, 0);
+       analogWrite(ledPin, 0);  
+       }
+}
