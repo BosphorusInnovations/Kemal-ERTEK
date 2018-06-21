@@ -74,8 +74,7 @@ void loop() {
 }
   buttonState = digitalRead(testPin);
   if (buttonState == HIGH) {
-          digitalWrite(selenoid2Pin, HIGH);
-
+    digitalWrite(selenoid2Pin, HIGH);
     digitalWrite(motorPin, HIGH);
     digitalWrite(ledPin, HIGH);
     digitalWrite(selenoidPin, HIGH);
@@ -94,7 +93,6 @@ void loop() {
   }
   sensorValue = analogRead(sensorPin);
   minValue = analogRead(minPin);
-//  AIR PRESSURE CONDITION
               if(sensorValue >= 275){
           Pressure = true;
               }
@@ -107,7 +105,6 @@ void loop() {
        analogWrite(ledPin, 255);
        analogWrite(selenoidPin, 255);
        analogWrite(selenoid2Pin, 0);
-
     } 
     else if(sensorValue >= maxValue && minValue <= maxValue && Pressure){
        analogWrite(motorPin, 255);
