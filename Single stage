@@ -99,7 +99,5 @@ void loop() {
        analogWrite(selenoidPin, 0);
        analogWrite(motorPin, 0);
        analogWrite(ledPin, 0);  
-       }
-
-       
+       }       
 }
