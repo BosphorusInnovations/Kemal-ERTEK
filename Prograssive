@@ -47,6 +47,7 @@ void setPwmFrequency(int pin, int divisor) {
 void setup() {
     pinMode(ledPin, OUTPUT);
     pinMode(selenoidPin, OUTPUT);
+    pinMode(LED_BUILTIN, OUTPUT);
     pinMode(motorPin, OUTPUT);
     pinMode(sensorPin, INPUT);
     pinMode(minPin, INPUT);
@@ -62,10 +63,12 @@ void loop() {
        digitalWrite(ledPin, HIGH); 
        digitalWrite(motorPin, HIGH);
        digitalWrite(selenoidPin, HIGH);
+       digitalWrite(LED_BUILTIN, HIGH);
        delay(5000);            
        digitalWrite(ledPin, LOW);
        digitalWrite(motorPin, LOW);
        digitalWrite(selenoidPin, LOW);
+       digitalWrite(LED_BUILTIN, LOW);
           currentcount=1;
 }
   buttonState = digitalRead(testPin);
@@ -73,16 +76,20 @@ void loop() {
     digitalWrite(motorPin, HIGH);
     digitalWrite(ledPin, HIGH);
     digitalWrite(selenoidPin, HIGH);
+    digitalWrite(LED_BUILTIN, HIGH); 
    delay(5000);   
     digitalWrite(motorPin, LOW);
     digitalWrite(ledPin, LOW);
     digitalWrite(selenoidPin, LOW);
+    digitalWrite(LED_BUILTIN, LOW); 
   }
    liquidSufVal = digitalRead(liquidSufPin);
    if (liquidSufVal == HIGH) {
      digitalWrite(ledPin, HIGH);  
+     digitalWrite(LED_BUILTIN, HIGH);
      delay(50000);                
      digitalWrite(ledPin, LOW);  
+     digitalWrite(LED_BUILTIN, LOW);
      delay(50000);    
   }
   sensorValue = analogRead(sensorPin);
@@ -99,16 +106,19 @@ void loop() {
        val = map(val, minValue, maxValue, 75, 255);
        analogWrite(motorPin, val);
        analogWrite(ledPin, val);
+       analogWrite(LED_BUILTIN, val);
        analogWrite(selenoidPin, 255);
     } 
     else if(sensorValue >= maxValue && sensorValue >= minValue && minValue <= maxValue && Pressure){
        analogWrite(motorPin, 255);
        analogWrite(ledPin, 255);
+       analogWrite(LED_BUILTIN, 255);
        analogWrite(selenoidPin, 255);
       }
   else {
        analogWrite(selenoidPin, 0);
        analogWrite(motorPin, 0);
        analogWrite(ledPin, 0);  
+       analogWrite(LED_BUILTIN, 0);
        }
 }
