@@ -1,3 +1,4 @@
+
 int sensorPin = A0;    
 int minPin = A1;    
 int maxPin = A2;
