@@ -21,6 +21,7 @@ void setPwmFrequency(int pin, int divisor) {
   byte mode;
   if (pin == 5 || pin == 6 || pin == 9 || pin == 10) {
     switch (divisor) {
+      
       case 1: mode = 0x01; break;
       case 8: mode = 0x02; break;
       case 64: mode = 0x03; break;
