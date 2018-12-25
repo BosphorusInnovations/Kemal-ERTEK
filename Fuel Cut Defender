@@ -1,0 +1,40 @@
+int limitPin = A2;
+int inputPin = A0;
+int outputPin = 9;
+int currentcount = 0;
+int limitValue = 0;
+int inputValue = 0;
+int outputValue = 0;
+void setup() {
+   // declare the potansPin as an INPUT:
+    pinMode(limitPin, INPUT);
+   // declare the readerPin as an INPUT
+    pinMode(inputPin, INPUT);
+   // declare the readerPin as an OUTPUT
+    pinMode(outputPin, OUTPUT);
+      Serial.begin(9600);
+}
+void loop() { 
+ int  starttime = millis();
+ int endtime = starttime;
+ if(currentcount == 0){
+while ((endtime - starttime) <= 30000){
+  inputValue = analogRead(inputPin);
+  inputValue = map(inputValue, 0, 1024, 0, 255);  
+  analogWrite(outputPin, inputValue);
+  endtime = millis();
+}
+          currentcount=1;
+} limitValue = analogRead(limitPin);
+  inputValue = analogRead(inputPin);
+  inputValue = map(inputValue, 0, 1024, 0, 255);
+  limitValue = map(limitValue, 0, 1024, 0, 255);
+
+  if (inputValue < limitValue) {
+outputValue = inputValue; 
+}
+  else {
+outputValue = limitValue;
+    }
+   analogWrite(outputPin, outputValue);
+}
